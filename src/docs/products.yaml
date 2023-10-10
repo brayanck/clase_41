@@ -1,0 +1,225 @@
+
+paths:
+  /api/products:
+    get:
+      summary: Obtiene todos los productos en la app
+      tags:
+        - Products
+      responses:
+        '200':
+          description: La operación fue exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '400':
+          description: Error en el envío de datos
+        '500':
+          description: Error inesperado en el servidor, no se pudo manejar el proceso
+          
+    post:
+      summary: Creates a new product
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBody/NewProduct'
+      responses:
+        "201":
+          description: The created product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Error en el envío de datos
+        '500':
+          description: Error inesperado en el servidor, no se pudo manejar el proceso
+
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto disponible en la app por ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se desea buscar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: La operación fue exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Error en el envío de datos
+        '500':
+          description: Error inesperado en el servidor, no se pudo manejar el proceso
+    put:
+      summary: Actualiza el producto a partir de su ID
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: ID del producto que se desea actualizar
+        type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBody/updateProduct'
+      responses:
+        '200':
+          description: Producto actualizado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error inesperado en el servidor, no se pudo manejar el proceso
+  /api/products/mockingproducts:
+    get:
+      summary: Obtiene un producto hecho por faker
+      tags:
+        - Products
+      responses:
+        '200':
+          description: La operación fue exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '400':
+          description: Error en el envío de datos
+        '500':
+          description: Error inesperado en el servidor, no se pudo manejar el proceso
+          
+
+
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - price
+        - image
+        - category
+        - stock
+        - owner
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado por MongoDB
+        name: 
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        image: 
+          type: string
+          description: URL de la imagen del producto
+        category: 
+          type: string
+          description: Categoría del producto
+        stock:
+          type: number
+          description: Cantidad de stock del producto
+        owner:
+          type: string
+          description: ID del creador 
+      example:
+        _id: '648a1f5bbd8e0bf818907c31'
+        name: Beastars-VOLUMEN 3
+        description: (Descripción del producto aquí)
+        price: 3000
+        image: https://www.ivrea.com.ar/beastars/beastars03.jpg
+        category: Drama
+        stock: 16
+        owner: '651342602d169a3a145f3a91'
+  requestBody:
+    updateProduct:
+      type: object 
+      properties:
+        name: 
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        image: 
+          type: string
+          description: URL de la imagen del producto
+        category: 
+          type: string
+          description: Categoría del producto
+        stock:
+          type: number
+          description: Cantidad de stock del producto
+      example:
+        name: Beastars-VOLUMEN 3
+        description: Descripción del producto aquí
+        price: 3000
+        image: https://www.ivrea.com.ar/beastars/beastars03.jpg
+        category: Drama
+        stock: 16
+    NewProduct:
+      type: object
+      required:
+        - name
+        - description
+        - price
+        - image
+        - category
+        - stock
+      properties:
+        name: 
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        image: 
+          type: string
+          description: URL de la imagen del producto
+        category: 
+          type: string
+          description: Categoría del producto
+        stock:
+          type: number
+          description: Cantidad de stock del producto
+      example:
+          name: Beastars-VOLUMEN 3
+          description: Descripción del producto aquí
+          price: 3000
+          image: https://www.ivrea.com.ar/beastars/beastars03.jpg
+          category: Drama
+          stock: 16
